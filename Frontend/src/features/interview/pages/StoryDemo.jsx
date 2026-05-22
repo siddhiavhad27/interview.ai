@@ -1,0 +1,39 @@
+import React from 'react';
+import FlowArt, { FlowSection } from '../../../components/ui/story-scroll';
+
+export default function StoryDemo() {
+  return (
+    <div className="min-h-screen bg-gray-900 text-white p-4">
+      <FlowArt aria-label="Presentation Flow Art">
+      <FlowSection aria-label="Who we are" style={{ backgroundColor: '#fd5200', color: '#fff' }}>
+        <p className="text-xs font-bold uppercase tracking-[0.2em]">01 — Who we are</p>
+        <hr className="my-[2vw] border-none border-t border-black opacity-100" />
+        <div>
+          <h1 className="text-[clamp(3.5rem,12vw,14rem)] font-bold leading-[0.85] uppercase tracking-tight">
+            Create<br />Without<br />Limits
+          </h1>
+        </div>
+        <hr className="my-[2vw] border-none border-t border-black opacity-100" />
+        <p className="mt-auto max-w-[50ch] text-[clamp(1rem,2.5vw,2rem)] font-normal leading-relaxed">
+          We believe every artist deserves a platform that puts creativity first. No algorithms, no noise — just pure art and the people who make it.
+        </p>
+      </FlowSection>
+
+      <FlowSection aria-label="The mission" style={{ backgroundColor: '#000', color: '#fff' }}>
+        <p className="text-xs font-bold uppercase tracking-[0.2em]">02 — The mission</p>
+        <hr className="my-[2vw] border-none border-t border-white/60" />
+        <div>
+          <h2 className="text-[clamp(3.5rem,12vw,14rem)] font-bold leading-[0.85] uppercase tracking-tight">
+            Art<br />First<br />Always
+          </h2>
+        </div>
+        <hr className="my-[2vw] border-none border-t border-white/60" />
+        <p className="max-w-[50ch] text-[clamp(1rem,2.5vw,2rem)] font-normal leading-relaxed">
+          A global community built for artists, by artists. We&apos;re rewriting the rules of how creative work gets seen, shared, and valued.
+        </p>
+        {/* Additional sections omitted for brevity */}
+      </FlowSection>
+    </FlowArt>
+    </div>
+  );
+}

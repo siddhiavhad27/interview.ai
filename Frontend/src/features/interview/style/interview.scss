@@ -1,0 +1,1008 @@
+// ── Shared Variables (mirrors home.scss theme) ────────────────────────────────
+$bg-page: #0d1117;
+$bg-card: #161b22;
+$bg-panel: #1c2230;
+$bg-input: #1e2535;
+$border-color: #2a3348;
+$text-primary: #e6edf3;
+$text-muted: #7d8590;
+$accent: #ff2d78;
+$font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+// severity palette
+$severity-high: #ff4d4d;
+$severity-medium: #f5a623;
+$severity-low: #3fb950;
+
+*::-webkit-scrollbar {
+    display: none;
+}
+
+// ── Page Shell ────────────────────────────────────────────────────────────────
+.interview-page {
+    width: 100%;
+    min-height: 100vh;
+    background-color: $bg-page;
+    color: $text-primary;
+    font-family: $font-stack;
+    display: flex;
+    align-items: stretch;
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+// ── 3-Column Layout ───────────────────────────────────────────────────────────
+.interview-layout {
+    display: flex;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    background-color: $bg-card;
+    border: 1px solid $border-color;
+    border-radius: 1rem;
+    justify-content: space-between;
+}
+
+.interview-divider {
+    width: 1px;
+    background-color: $border-color;
+    flex-shrink: 0;
+}
+
+// ── Left Nav ─────────────────────────────────────────────────────────────────
+.interview-nav {
+    width: 220px;
+    flex-shrink: 0;
+    padding: 1.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.25rem;
+
+
+
+
+    &__label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: $text-muted;
+        padding: 0 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    &__back-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: none;
+        border: none;
+        color: $text-muted;
+        font-family: $font-stack;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.5rem;
+        transition: color 0.15s, background-color 0.15s;
+        margin-bottom: 1rem;
+        align-self: flex-start;
+
+        &:hover {
+            color: $text-primary;
+            background-color: $bg-panel;
+        }
+    }
+
+    &__logout-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.65rem 0.75rem;
+        background-color: rgba($bg-panel, 0.4);
+        border: 1px solid $border-color;
+        border-radius: 0.5rem;
+        color: $text-muted;
+        font-family: $font-stack;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 0.75rem;
+        transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+
+        &:hover {
+            background-color: rgba($accent, 0.1);
+            border-color: $accent;
+            color: $accent;
+        }
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        width: 100%;
+        padding: 0.65rem 0.75rem;
+        background: none;
+        border: none;
+        border-radius: 0.5rem;
+        color: $text-muted;
+        font-family: $font-stack;
+        font-size: 0.875rem;
+        cursor: pointer;
+        text-align: left;
+        transition: background-color 0.15s, color 0.15s;
+
+        &:hover {
+            background-color: $bg-panel;
+            color: $text-primary;
+        }
+
+        &--active {
+            background-color: rgba($accent, 0.1);
+            color: $accent;
+
+            .interview-nav__icon svg {
+                stroke: $accent;
+            }
+        }
+    }
+
+    &__icon {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+}
+
+// ── Center Content ────────────────────────────────────────────────────────────
+.interview-content {
+    flex: 1;
+    padding: 1.75rem 2rem;
+    overflow-y: auto;
+    min-height: initial;
+    max-height: calc(100vh - 3rem);
+    padding-bottom: 5rem;
+    align-items: flex-start;
+
+
+
+
+
+
+
+
+    section {
+        min-height: 100%;
+    }
+}
+
+.content-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $border-color;
+
+    h2 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: $text-primary;
+        margin: 0;
+    }
+
+    &__count {
+        font-size: 0.8rem;
+        color: $text-muted;
+        background-color: $bg-panel;
+        padding: 0.15rem 0.6rem;
+        border-radius: 2rem;
+        border: 1px solid $border-color;
+    }
+}
+
+// ── Question Cards ────────────────────────────────────────────────────────────
+.q-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.q-card {
+    background-color: $bg-panel;
+    border: 1px solid $border-color;
+    border-radius: 0.6rem;
+    overflow: hidden;
+    transition: border-color 0.2s;
+
+    &:hover {
+        border-color: lighten($border-color, 8%);
+    }
+
+    &__header {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.9rem 1rem;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    &__index {
+        flex-shrink: 0;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: $accent;
+        background-color: rgba($accent, 0.1);
+        border: 1px solid rgba($accent, 0.2);
+        border-radius: 0.3rem;
+        padding: 0.15rem 0.4rem;
+        margin-top: 2px;
+    }
+
+    &__question {
+        flex: 1;
+        margin: 0;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: $text-primary;
+        line-height: 1.5;
+    }
+
+    &__chevron {
+        flex-shrink: 0;
+        color: $text-muted;
+        transition: transform 0.2s;
+        margin-top: 2px;
+
+        &--open {
+            transform: rotate(180deg);
+            color: $accent;
+        }
+    }
+
+    &__body {
+        padding: 0 1rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        border-top: 1px solid $border-color;
+        padding-top: 0.75rem;
+    }
+
+    &__section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+
+        p {
+            margin: 0;
+            font-size: 0.835rem;
+            color: lighten($text-muted, 15%);
+            line-height: 1.6;
+        }
+    }
+
+    &__tag {
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        padding: 0.15rem 0.5rem;
+        border-radius: 0.25rem;
+        width: fit-content;
+
+        &--intention {
+            color: #a78bfa;
+            background-color: rgba(#a78bfa, 0.1);
+            border: 1px solid rgba(#a78bfa, 0.2);
+        }
+
+        &--answer {
+            color: #3fb950;
+            background-color: rgba(#3fb950, 0.1);
+            border: 1px solid rgba(#3fb950, 0.2);
+        }
+    }
+}
+
+// ── Road Map ──────────────────────────────────────────────────────────────────
+.roadmap-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+
+    // vertical timeline line
+    &::before {
+        content: '';
+        position: absolute;
+        left: 28px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, $accent, rgba($accent, 0.1));
+        border-radius: 1px;
+    }
+}
+
+.roadmap-day {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem 0 0.75rem 3.5rem;
+    position: relative;
+
+    // dot on timeline
+    &::before {
+        content: '';
+        position: absolute;
+        left: 21px;
+        top: 1.05rem;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: $bg-card;
+        border: 2px solid $accent;
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    &__badge {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: $accent;
+        background-color: rgba($accent, 0.1);
+        border: 1px solid rgba($accent, 0.25);
+        padding: 0.1rem 0.5rem;
+        border-radius: 2rem;
+    }
+
+    &__focus {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: $text-primary;
+    }
+
+    &__tasks {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.845rem;
+            color: lighten($text-muted, 12%);
+            line-height: 1.5;
+        }
+    }
+
+    &__bullet {
+        flex-shrink: 0;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background-color: $text-muted;
+        margin-top: 8px;
+    }
+}
+
+// ── Right Sidebar ─────────────────────────────────────────────────────────────
+.interview-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    padding: 1.75rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.sidebar-divider {
+    height: 1px;
+    background-color: $border-color;
+}
+
+// Match Score
+.match-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+
+    &__label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: $text-muted;
+        margin: 0;
+        align-self: flex-start;
+    }
+
+    &__ring {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 4px solid;
+
+        &.score--high {
+            border-color: $severity-low;
+        }
+
+        &.score--mid {
+            border-color: $severity-medium;
+        }
+
+        &.score--low {
+            border-color: $severity-high;
+        }
+    }
+
+    &__value {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: $text-primary;
+        line-height: 1;
+    }
+
+    &__pct {
+        font-size: 0.75rem;
+        color: $text-muted;
+        margin-top: -2px;
+    }
+
+    &__sub {
+        margin: 0;
+        font-size: 0.75rem;
+        color: $severity-low;
+        text-align: center;
+    }
+}
+
+// Skill Gaps
+.skill-gaps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    &__label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: $text-muted;
+        margin: 0;
+    }
+
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}
+
+.skill-tag {
+    font-size: 0.775rem;
+    font-weight: 500;
+    padding: 0.3rem 0.7rem;
+    border-radius: 0.4rem;
+    border: 1px solid;
+    cursor: default;
+
+    &--high {
+        color: $severity-high;
+        background-color: rgba($severity-high, 0.1);
+        border-color: rgba($severity-high, 0.25);
+    }
+
+    &--medium {
+        color: $severity-medium;
+        background-color: rgba($severity-medium, 0.1);
+        border-color: rgba($severity-medium, 0.25);
+    }
+
+    &--low {
+        color: $severity-low;
+        background-color: rgba($severity-low, 0.1);
+        border-color: rgba($severity-low, 0.25);
+    }
+}
+
+// ── View Toggle ───────────────────────────────────────────────────────────────
+.view-toggle {
+    display: flex;
+    background-color: $bg-panel;
+    border: 1px solid $border-color;
+    border-radius: 0.5rem;
+    padding: 0.2rem;
+    gap: 0.25rem;
+
+    .toggle-btn {
+        background: none;
+        border: none;
+        color: $text-muted;
+        font-family: $font-stack;
+        font-size: 0.775rem;
+        font-weight: 600;
+        padding: 0.35rem 0.75rem;
+        border-radius: 0.35rem;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s;
+
+        &:hover {
+            color: $text-primary;
+        }
+
+        &.active {
+            background-color: $accent;
+            color: #fff;
+        }
+    }
+}
+
+// ── Practice Section inside Q-Card ────────────────────────────────────────────
+.q-card__practice {
+    background-color: rgba($bg-input, 0.4);
+    border: 1px solid rgba($border-color, 0.8);
+    border-radius: 0.6rem;
+    padding: 1rem;
+    margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .q-card__tag--practice {
+        color: $accent;
+        background-color: rgba($accent, 0.1);
+        border: 1px solid rgba($accent, 0.25);
+    }
+
+    .practice-textarea {
+        background-color: $bg-input;
+        border: 1px solid $border-color;
+        border-radius: 0.4rem;
+        padding: 0.75rem;
+        color: $text-primary;
+        font-family: $font-stack;
+        font-size: 0.825rem;
+        line-height: 1.5;
+        resize: vertical;
+        min-height: 80px;
+        outline: none;
+        transition: border-color 0.2s;
+
+        &:focus {
+            border-color: $accent;
+        }
+    }
+
+    .practice-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .practice-btn {
+        background: linear-gradient(135deg, $accent 0%, darken($accent, 10%) 100%);
+        color: #fff;
+        border: none;
+        border-radius: 0.4rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.2s;
+        font-family: $font-stack;
+
+        &:hover:not(:disabled) {
+            opacity: 0.9;
+        }
+
+        &:disabled {
+            background: $border-color;
+            color: $text-muted;
+            cursor: not-allowed;
+        }
+    }
+
+    .grade-result {
+        background-color: rgba($bg-page, 0.6);
+        border: 1px solid $border-color;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        animation: fadeIn 0.3s ease-out;
+
+        .grade-score-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba($border-color, 0.5);
+            padding-bottom: 0.5rem;
+
+            h4 {
+                margin: 0;
+                font-size: 0.875rem;
+                font-weight: 700;
+                color: $text-primary;
+            }
+
+            .score-badge {
+                font-size: 0.8rem;
+                font-weight: 600;
+                color: $text-muted;
+
+                .score-value {
+                    font-size: 0.95rem;
+                    font-weight: 700;
+                    padding-left: 0.25rem;
+
+                    &.high { color: $severity-low; }
+                    &.mid { color: $severity-medium; }
+                    &.low { color: $severity-high; }
+                }
+            }
+        }
+
+        .grade-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            h5 {
+                margin: 0;
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: $text-muted;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            p {
+                margin: 0;
+                font-size: 0.8rem;
+                color: lighten($text-muted, 20%);
+                line-height: 1.5;
+            }
+        }
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+// ── Roadmap Task Item & Custom Checkbox ─────────────────────────────────────────
+.roadmap-task-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    background-color: rgba($bg-panel, 0.4);
+    border: 1px solid rgba($border-color, 0.6);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    margin-bottom: 0.5rem;
+
+    &:hover {
+        background-color: $bg-panel;
+        border-color: rgba($accent, 0.3);
+    }
+
+    &.completed {
+        background-color: rgba($severity-low, 0.03);
+        border-color: rgba($severity-low, 0.2);
+
+        .task-text {
+            text-decoration: line-through;
+            color: $text-muted;
+        }
+
+        .checkbox-custom {
+            background-color: $severity-low;
+            border-color: $severity-low;
+
+            &::after {
+                display: block;
+            }
+        }
+    }
+
+    .checkbox-container {
+        position: relative;
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+
+        .task-checkbox {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkbox-custom {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 18px;
+            width: 18px;
+            background-color: $bg-input;
+            border: 2px solid $border-color;
+            border-radius: 4px;
+            transition: all 0.2s;
+
+            &::after {
+                content: "";
+                position: absolute;
+                display: none;
+                left: 5px;
+                top: 2px;
+                width: 4px;
+                height: 8px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
+            }
+        }
+    }
+
+    .task-text {
+        font-size: 0.85rem;
+        color: lighten($text-muted, 15%);
+        transition: color 0.2s;
+        line-height: 1.4;
+    }
+}
+
+// ── Roadmap Progress Banner ───────────────────────────────────────────────────
+.progress-banner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: rgba($bg-panel, 0.6);
+    border: 1px solid $border-color;
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(8px);
+
+    .progress-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .progress-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: $text-primary;
+        }
+
+        .progress-stats {
+            font-size: 0.8rem;
+            color: $accent;
+            font-weight: 700;
+        }
+    }
+
+    .progress-bar-bg {
+        width: 100%;
+        height: 6px;
+        background-color: $bg-input;
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, $accent 0%, #ff6b9d 100%);
+        border-radius: 3px;
+        transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}
+
+// ── Flashcard 3D Card Deck ─────────────────────────────────────────────────────
+.flashcard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 540px;
+    margin: 2rem auto;
+    perspective: 1000px;
+}
+
+.flashcard {
+    width: 100%;
+    height: 280px;
+    cursor: pointer;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.flipped {
+        transform: rotateY(180deg);
+    }
+
+    .flashcard-inner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+    }
+
+    .flashcard-front,
+    .flashcard-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 1rem;
+        border: 1px solid rgba($border-color, 0.8);
+        padding: 2rem;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .flashcard-front {
+        background: linear-gradient(135deg, $bg-panel 0%, rgba($bg-panel, 0.6) 100%);
+        color: $text-primary;
+        z-index: 2;
+        transform: rotateY(0deg);
+    }
+
+    .flashcard-back {
+        background: linear-gradient(135deg, darken($bg-panel, 2%) 0%, $bg-panel 100%);
+        color: $text-primary;
+        transform: rotateY(180deg);
+        overflow-y: auto;
+    }
+
+    .flashcard-tag {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: $accent;
+        background-color: rgba($accent, 0.1);
+        border: 1px solid rgba($accent, 0.25);
+        padding: 0.25rem 0.6rem;
+        border-radius: 2rem;
+        width: fit-content;
+    }
+
+    .flashcard-question {
+        font-size: 1.15rem;
+        font-weight: 600;
+        line-height: 1.6;
+        text-align: center;
+        margin: auto 0;
+        color: $text-primary;
+    }
+
+    .flashcard-flip-hint {
+        font-size: 0.75rem;
+        color: $text-muted;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        margin-top: auto;
+        
+        svg {
+            stroke: $text-muted;
+        }
+    }
+
+    .flashcard-back-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        flex: 1;
+        justify-content: center;
+
+        .flashcard-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            p {
+                margin: 0;
+                font-size: 0.825rem;
+                color: lighten($text-muted, 15%);
+                line-height: 1.5;
+            }
+        }
+
+        .flashcard-section-tag {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            width: fit-content;
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.2rem;
+
+            &.intention {
+                color: #a78bfa;
+                background-color: rgba(#a78bfa, 0.1);
+                border: 1px solid rgba(#a78bfa, 0.2);
+            }
+
+            &.answer {
+                color: #3fb950;
+                background-color: rgba(#3fb950, 0.1);
+                border: 1px solid rgba(#3fb950, 0.2);
+            }
+        }
+    }
+}
+
+.flashcard-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+
+    .deck-btn {
+        background-color: $bg-panel;
+        border: 1px solid $border-color;
+        border-radius: 0.5rem;
+        color: $text-primary;
+        font-family: $font-stack;
+        font-size: 0.85rem;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        transition: background-color 0.2s, border-color 0.2s;
+
+        &:hover {
+            background-color: rgba($accent, 0.05);
+            border-color: $accent;
+            color: $accent;
+            
+            svg {
+                stroke: $accent;
+            }
+        }
+
+        svg {
+            stroke: $text-primary;
+            transition: stroke 0.2s;
+        }
+    }
+
+    .deck-progress {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: $text-muted;
+    }
+}

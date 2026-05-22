@@ -1,0 +1,321 @@
+.landing-page {
+    min-height: 100vh;
+    background: radial-gradient(circle at 50% 0%, #1e111d 0%, #0d0d0e 70%);
+    color: #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Header */
+.landing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 8%;
+    backdrop-filter: blur(12px);
+    background: rgba(22, 22, 22, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: #fff;
+    cursor: default;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    color: #9ca3af;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+    font-size: 0.95rem;
+
+    &:hover {
+        color: #fff;
+    }
+}
+
+.nav-cta {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, #d20d3b 0%, #a30628 100%);
+    border: none;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-weight: 600;
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 20px -10px rgba(210, 13, 59, 0.5);
+    }
+}
+
+/* Hero Section */
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 8% 4rem;
+    position: relative;
+    z-index: 10;
+}
+
+.hero-content {
+    max-width: 800px;
+    position: relative;
+    z-index: 5;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 850;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #9ca3af;
+    margin-bottom: 2.5rem;
+    font-weight: 400;
+    animation: fadeIn 1s ease-out;
+}
+
+.hero-ctas {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    animation: fadeIn 1.2s ease-out;
+}
+
+.hero-cta-btn {
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.primary-button {
+    background: linear-gradient(135deg, #d20d3b 0%, #a30628 100%);
+    border: none;
+    color: #white;
+    box-shadow: 0 4px 14px rgba(210, 13, 59, 0.3);
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(210, 13, 59, 0.4);
+    }
+}
+
+.secondary-button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+    }
+}
+
+.hero-shapes {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+}
+
+.shape-1 {
+    width: 400px;
+    height: 400px;
+    background: rgba(210, 13, 59, 0.15);
+    top: 10%;
+    left: 20%;
+}
+
+.shape-2 {
+    width: 500px;
+    height: 500px;
+    background: rgba(163, 6, 40, 0.1);
+    bottom: 10%;
+    right: 20%;
+}
+
+/* Features Section */
+.features-section {
+    padding: 6rem 8%;
+    background: rgba(22, 22, 22, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    z-index: 2;
+}
+
+.section-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 4rem;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    background: rgba(30, 30, 32, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(8px);
+
+    &:hover {
+        transform: translateY(-5px);
+        border-color: rgba(210, 13, 59, 0.3);
+        box-shadow: 0 12px 30px -15px rgba(210, 13, 59, 0.2);
+    }
+}
+
+.feature-icon {
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
+}
+
+.feature-card h3 {
+    font-size: 1.25rem;
+    color: #fff;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+}
+
+.feature-card p {
+    font-size: 0.95rem;
+    color: #9ca3af;
+    line-height: 1.5;
+}
+
+/* Stats Section */
+.stats-section {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 4rem 8%;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    background: rgba(22, 22, 22, 0.4);
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-item h4 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #d20d3b;
+    margin-bottom: 0.5rem;
+}
+
+.stat-item p {
+    font-size: 1rem;
+    color: #9ca3af;
+    font-weight: 500;
+}
+
+/* Footer */
+.landing-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5rem 8%;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    background: #0b0b0c;
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-top: auto;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-links {
+    display: flex;
+    gap: 1.5rem;
+
+    a {
+        color: #6b7280;
+        text-decoration: none;
+        transition: color 0.2s;
+
+        &:hover {
+            color: #d20d3b;
+        }
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    .landing-header {
+        padding: 1.25rem 5%;
+    }
+    .hero-section {
+        padding: 4rem 5% 3rem;
+    }
+    .hero-ctas {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}
