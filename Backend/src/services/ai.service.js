@@ -32,9 +32,58 @@ const interviewReportSchema = z.object({
     title: z.string().describe("The title of the job for which the interview report is generated"),
 })
 
+// Helper to retry transient AI errors (503 Service Unavailable, 429 Too Many Requests, or rate limit issues)
+async function callAiWithRetry(fn, retries = 3, delay = 1000) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            return await fn();
+        } catch (error) {
+            const isTransient = error.status === 503 || error.status === 429 || 
+                                (error.message && (
+                                    error.message.includes("503") || 
+                                    error.message.includes("429") || 
+                                    error.message.includes("high demand") || 
+                                    error.message.includes("Quota exceeded") ||
+                                    error.message.includes("RESOURCE_EXHAUSTED") ||
+                                    error.message.includes("UNAVAILABLE")
+                                ));
+            if (isTransient && i < retries - 1) {
+                console.warn(`AI call failed with transient error: ${error.message}. Retrying in ${delay}ms... (Attempt ${i + 1}/${retries})`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2; // exponential backoff
+            } else {
+                throw error;
+            }
+        }
+    }
+}
+
+// Helper to attempt a call with a primary model, and fall back to a backup model if it fails
+async function generateContentWithFallback(primaryModel, backupModel, options) {
+    try {
+        console.log(`Calling Gemini API with primary model: ${primaryModel}`);
+        return await callAiWithRetry(() => ai.models.generateContent({
+            model: primaryModel,
+            ...options
+        }));
+    } catch (primaryError) {
+        console.warn(`Primary model ${primaryModel} failed. Attempting backup model ${backupModel}... Error: ${primaryError.message}`);
+        if (backupModel && backupModel !== primaryModel) {
+            try {
+                return await callAiWithRetry(() => ai.models.generateContent({
+                    model: backupModel,
+                    ...options
+                }));
+            } catch (backupError) {
+                console.error(`Backup model ${backupModel} also failed. Error: ${backupError.message}`);
+                throw backupError;
+            }
+        }
+        throw primaryError;
+    }
+}
+
 async function generateInterviewReport({ resume, selfDescription, jobDescription, difficulty = "Mid", tone = "Standard", companyType = "FAANG" }) {
-
-
     const prompt = `Generate an interview report for a candidate with the following details:
                         Resume: ${resume}
                         Self Description: ${selfDescription}
@@ -48,8 +97,7 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
                         Please tailor the interview questions, expected answers, skill gaps, and preparation plan based on the above parameters. For example, if Tone is "Stress", make questions highly analytical or challenging. If Difficulty is "Lead" or "Senior", focus heavily on architecture and design.
 `
 
-    const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+    const response = await generateContentWithFallback("gemini-3-flash-preview", "gemini-2.5-flash", {
         contents: prompt,
         config: {
             responseMimeType: "application/json",
@@ -58,11 +106,7 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
     })
 
     return JSON.parse(response.text)
-
-
 }
-
-
 
 async function generatePdfFromHtml(htmlContent) {
     const browser = await puppeteer.launch({
@@ -89,7 +133,6 @@ async function generatePdfFromHtml(htmlContent) {
 }
 
 async function generateResumePdf({ resume, selfDescription, jobDescription }) {
-
     const resumePdfSchema = z.object({
         html: z.string().describe("The HTML content of the resume which can be converted to PDF using any library like puppeteer")
     })
@@ -107,8 +150,7 @@ async function generateResumePdf({ resume, selfDescription, jobDescription }) {
                         The resume should not be so lengthy, it should ideally be 1-2 pages long when converted to PDF. Focus on quality rather than quantity and make sure to include all the relevant information that can increase the candidate's chances of getting an interview call for the given job description.
                     `
 
-    const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+    const response = await generateContentWithFallback("gemini-3-flash-preview", "gemini-2.5-flash", {
         contents: prompt,
         config: {
             responseMimeType: "application/json",
@@ -116,13 +158,9 @@ async function generateResumePdf({ resume, selfDescription, jobDescription }) {
         }
     })
 
-
     const jsonContent = JSON.parse(response.text)
-
     const pdfBuffer = await generatePdfFromHtml(jsonContent.html)
-
     return pdfBuffer
-
 }
 
 const answerGradingSchema = z.object({
@@ -140,8 +178,7 @@ async function gradeUserAnswer({ question, userAnswer, modelAnswer }) {
 
                     Analyze the candidate's response. Be constructive, professional, and assign a fair score from 0 to 100 based on completeness, accuracy, and professional delivery.`
 
-    const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
+    const response = await generateContentWithFallback("gemini-2.5-flash", "gemini-3-flash-preview", {
         contents: prompt,
         config: {
             responseMimeType: "application/json",
@@ -166,8 +203,7 @@ You can:
 - Conduct simulated mock interview practices (ask one technical/behavioral question at a time, wait for response, and grade them constructively).
 Keep your tone professional, warm, highly encouraging, and structured. Use clean markdown lists and formatting for maximum readability.`
 
-    const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
+    const response = await generateContentWithFallback("gemini-2.5-flash", "gemini-3-flash-preview", {
         contents: formattedMessages,
         config: {
             systemInstruction: systemInstruction
