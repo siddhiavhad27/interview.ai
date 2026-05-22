@@ -6,6 +6,7 @@ import Home from "./features/interview/pages/Home";
 import Interview from "./features/interview/pages/Interview";
 import LandingPage from "./features/interview/pages/LandingPage";
 import StoryDemo from "./features/interview/pages/StoryDemo";
+import CareerAssistant from "./features/interview/pages/CareerAssistant";
 
 
 
@@ -33,5 +34,9 @@ export const router = createBrowserRouter([
     {
         path: "/story-demo",
         element: <Protected><StoryDemo /></Protected>
+    },
+    {
+        path: "/assistant",
+        element: <Protected><CareerAssistant /></Protected>
     }
 ])

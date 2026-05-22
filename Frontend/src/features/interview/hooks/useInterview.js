@@ -20,28 +20,33 @@ export const useInterview = () => {
         let response = null
         try {
             response = await generateInterviewReport({ jobDescription, selfDescription, resumeFile, difficulty, tone, companyType })
-            setReport(response.interviewReport)
+            if (response && response.interviewReport) {
+                setReport(response.interviewReport)
+            }
         } catch (error) {
             console.log(error)
         } finally {
             setLoading(false)
         }
 
-        return response.interviewReport
+        return response?.interviewReport || null
     }
 
     const getReportById = async (interviewId) => {
+        if (!interviewId || interviewId === "undefined") return null
         setLoading(true)
         let response = null
         try {
             response = await getInterviewReportById(interviewId)
-            setReport(response.interviewReport)
+            if (response && response.interviewReport) {
+                setReport(response.interviewReport)
+            }
         } catch (error) {
             console.log(error)
         } finally {
             setLoading(false)
         }
-        return response.interviewReport
+        return response?.interviewReport || null
     }
 
     const getReports = async () => {

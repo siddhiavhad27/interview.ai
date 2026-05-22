@@ -28,7 +28,11 @@ const Home = () => {
             tone,
             companyType
         })
-        navigate(`/interview/${data._id}`)
+        if (data && data._id) {
+            navigate(`/interview/${data._id}`)
+        } else {
+            alert("Failed to generate interview strategy. Please try again.")
+        }
     }
 
     if (loading) {

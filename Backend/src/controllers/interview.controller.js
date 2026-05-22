@@ -9,41 +9,55 @@ const interviewReportModel = require("../models/interviewReport.model")
  * @description Controller to generate interview report based on user self description, resume and job description.
  */
 async function generateInterViewReportController(req, res) {
+    console.log("generateInterViewReportController started...");
+    try {
+        let resumeText = ""
+        if (req.file && req.file.buffer) {
+            console.log("Parsing uploaded resume PDF...");
+            const resumeContent = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText()
+            resumeText = resumeContent.text
+            console.log("Resume parsed successfully. Length:", resumeText.length);
+        }
 
-    let resumeText = ""
-    if (req.file && req.file.buffer) {
-        const resumeContent = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText()
-        resumeText = resumeContent.text
+        const { selfDescription, jobDescription, difficulty, tone, companyType } = req.body
+        console.log("Input received:", { selfDescriptionLength: selfDescription?.length, jobDescriptionLength: jobDescription?.length, difficulty, tone, companyType });
+
+        console.log("Calling generateInterviewReport service...");
+        const interViewReportByAi = await generateInterviewReport({
+            resume: resumeText,
+            selfDescription,
+            jobDescription,
+            difficulty,
+            tone,
+            companyType
+        })
+        console.log("AI report generated successfully. Keys:", Object.keys(interViewReportByAi));
+
+        console.log("Creating interviewReport in MongoDB...");
+        const interviewReport = await interviewReportModel.create({
+            user: req.user.id,
+            resume: resumeText,
+            selfDescription,
+            jobDescription,
+            difficulty,
+            tone,
+            companyType,
+            completedTasks: [],
+            ...interViewReportByAi
+        })
+        console.log("Interview report saved successfully in DB. ID:", interviewReport._id);
+
+        res.status(201).json({
+            message: "Interview report generated successfully.",
+            interviewReport
+        })
+    } catch (error) {
+        console.error("Error in generateInterViewReportController:", error);
+        res.status(500).json({
+            message: "Internal server error during interview report generation.",
+            error: error.message
+        })
     }
-
-    const { selfDescription, jobDescription, difficulty, tone, companyType } = req.body
-
-    const interViewReportByAi = await generateInterviewReport({
-        resume: resumeText,
-        selfDescription,
-        jobDescription,
-        difficulty,
-        tone,
-        companyType
-    })
-
-    const interviewReport = await interviewReportModel.create({
-        user: req.user.id,
-        resume: resumeText,
-        selfDescription,
-        jobDescription,
-        difficulty,
-        tone,
-        companyType,
-        completedTasks: [],
-        ...interViewReportByAi
-    })
-
-    res.status(201).json({
-        message: "Interview report generated successfully.",
-        interviewReport
-    })
-
 }
 
 /**
@@ -170,20 +184,23 @@ async function gradeAnswerController(req, res) {
  */
 async function chatWithAssistantController(req, res) {
     const { messages } = req.body
+    console.log("chatWithAssistantController called with messages count:", messages?.length);
 
     if (!messages || !Array.isArray(messages)) {
         return res.status(400).json({ message: "messages array is required" })
     }
 
     try {
+        console.log("Calling chatWithAssistant AI service...");
         const reply = await chatWithAssistant({ messages })
+        console.log("AI assistant reply generated successfully.");
         res.status(200).json({
             message: "Response generated successfully.",
             reply
         })
     } catch (err) {
-        console.error(err)
-        res.status(500).json({ message: "Internal server error during assistant chat." })
+        console.error("Error in chatWithAssistantController:", err)
+        res.status(500).json({ message: "Internal server error during assistant chat.", error: err.message })
     }
 }
 
